@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>윷놀이 보드</title>
+  <style>
+    html, body {
+      margin: 0; padding: 0;
+      width: 100%; height: 100%;
+      display: flex; justify-content: center; align-items: center;
+      background: #f0f0f0;
+    }
+    #board {
+      position: relative;
+      width: 90vw; height: 90vh;
+      background: url('윷판.png') no-repeat center/contain;
+    }
+    .piece {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      position: absolute;
+      cursor: grab;
+      z-index: 10;
+    }
+    .red  { background: red; }
+    .blue { background: blue; }
+  </style>
+</head>
+<body>
+  <div id="board">
+    <!-- 파랑 윷말 4개 (우측 상단) -->
+    <div class="piece blue" style="right:20px; top:20px;"></div>
+    <div class="piece blue" style="right:70px; top:20px;"></div>
+    <div class="piece blue" style="right:20px; top:70px;"></div>
+    <div class="piece blue" style="right:70px; top:70px;"></div>
+
+    <!-- 빨강 윷말 4개 (우측 하단) -->
+    <div class="piece red" style="right:20px; bottom:20px;"></div>
+    <div class="piece red" style="right:70px; bottom:20px;"></div>
+    <div class="piece red" style="right:20px; bottom:70px;"></div>
+    <div class="piece red" style="right:70px; bottom:70px;"></div>
+  </div>
+
+  <script>
+    let dragged = null;
+    let offsetX = 0, offsetY = 0;
+    const board = document.getElementById("board");
+
+    document.querySelectorAll('.piece').forEach(piece => {
+      piece.addEventListener('mousedown', e => {
+        dragged = piece;
+        offsetX = e.offsetX;
+        offsetY = e.offsetY;
+      });
+    });
+
+    document.addEventListener('mousemove', e => {
+      if (dragged) {
+        const rect = board.getBoundingClientRect();
+        dragged.style.left = (e.pageX - rect.left - offsetX) + "px";
+        dragged.style.top  = (e.pageY - rect.top - offsetY) + "px";
+      }
+    });
+
+    document.addEventListener('mouseup', () => {
+      dragged = null;
+    });
+  </script>
+</body>
+</html>
